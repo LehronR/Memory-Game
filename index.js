@@ -1,5 +1,4 @@
-import {superMario, avengers, defaultDeck} from './card_decks.js';
-
+import { superMario, avengers, defaultDeck } from "./card_decks.js";
 
 let cards = defaultDeck;
 const shuffledArray = shuffleCards(cards);
@@ -9,51 +8,56 @@ const cardListArr = Array.from(cardList);
 
 const selectInput = document.querySelector("select");
 
-selectInput.addEventListener("change", function () {
-  console.log(selectInput.selectedIndex);
-});
-
-cardListArr.map(function (card) {
-  card.addEventListener("click", function (e) {
-    e.target.style.backgroundColor = "green";
-  });
-});
+// Change the theme of the card deck
+function changeTheme() {
+  // Mario
+  if (selectInput.selectedIndex === 1) {
+    for (let card of cardListArr) {
+      card.style.backgroundColor = "red";
+    }
+  } else {
+    // Avengers
+    for (let card of cardListArr) {
+      card.style.backgroundColor = "blue";
+    }
+  }
+}
 
 /*
     FUNCTIONS
 */
 //Creates a shuffled array containing two of each card
 function shuffleCards(cards) {
-    let numCards = cards.length;
-    let shuffledArray = [];
+  let numCards = cards.length;
+  let shuffledArray = [];
 
-    //Puts one of each card in a random location
-    cards.map((card) => {
-        let index = Math.floor(Math.random()*numCards*2);
-        if (!shuffledArray[index]) {
-            shuffledArray[index] = card;
-        } else {
-            while (shuffledArray[index]) {
-                index = Math.floor(Math.random()*numCards*2);
-            } //Ensures no overwrite
-            shuffledArray[index] = card;
-        }
-    });
-    
-    //Puts a second of each card in a random location
-    cards.map((card) => {
-        let index = Math.floor(Math.random()*numCards*2);
-        if (!shuffledArray[index]) {
-            shuffledArray[index] = card;
-        } else {
-            while (shuffledArray[index]) {
-                index = Math.floor(Math.random()*numCards*2);
-            }
-            shuffledArray[index] = card;
-        }
-    });
-    
-    return shuffledArray;
+  //Puts one of each card in a random location
+  cards.map((card) => {
+    let index = Math.floor(Math.random() * numCards * 2);
+    if (!shuffledArray[index]) {
+      shuffledArray[index] = card;
+    } else {
+      while (shuffledArray[index]) {
+        index = Math.floor(Math.random() * numCards * 2);
+      } //Ensures no overwrite
+      shuffledArray[index] = card;
+    }
+  });
+
+  //Puts a second of each card in a random location
+  cards.map((card) => {
+    let index = Math.floor(Math.random() * numCards * 2);
+    if (!shuffledArray[index]) {
+      shuffledArray[index] = card;
+    } else {
+      while (shuffledArray[index]) {
+        index = Math.floor(Math.random() * numCards * 2);
+      }
+      shuffledArray[index] = card;
+    }
+  });
+
+  return shuffledArray;
 }
 
 
