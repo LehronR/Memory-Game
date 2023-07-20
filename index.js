@@ -5,6 +5,7 @@ const shuffledArray = shuffleCards(cards);
 console.log(shuffledArray);
 const cardList = document.querySelectorAll("section>div");
 const cardListArr = Array.from(cardList);
+console.log(cardListArr);
 
 const selectInput = document.querySelector("select");
 
@@ -76,9 +77,10 @@ function flipCard(e) {;
 
 function compareCardsInitMatch() {
     let cardsFlipped = cardListArr.filter((card) => {
-        return card.className.contains('front');
+        return card.className === 'front';
         }
     );
+
     if (cardsFlipped.length === 2) {
         checkMatch(); 
     }
@@ -97,10 +99,14 @@ function checkMatch() {
     let secondCard = shuffledArray[secondCardIndex];
 
     if (firstCard.id === secondCard.id) {
-        //It's a match
+        console.log("It's a match!");
+        //Change class of flipped cards to include done
     } else {
-        //reset cards to .back
+        console.log("Too bad");
+        //Flip cards back over
     }
+
+    //Add in turn counter
 }
 
 //Changes card face and back color based on selected theme
