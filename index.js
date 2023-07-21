@@ -1,28 +1,15 @@
 import { superMario, avengers, defaultDeck } from "./card_decks.js";
 
-let cards = defaultDeck;
+let cards = superMario;
 const shuffledArray = shuffleCards(cards);
-console.log(shuffledArray);
 const cardList = document.querySelectorAll("section>div");
 const cardListArr = Array.from(cardList);
-console.log(cardListArr);
+let turnCounter = 0;
+const bestScore = [];
 
 const selectInput = document.querySelector("select");
 
-// Change the theme of the card deck
-function changeTheme() {
-  // Mario
-  if (selectInput.selectedIndex === 1) {
-    for (let card of cardListArr) {
-      card.style.backgroundColor = "red";
-    }
-  } else {
-    // Avengers
-    for (let card of cardListArr) {
-      card.style.backgroundColor = "blue";
-    }
-  }
-}
+console.log(shuffledArray);
 
 /*
     FUNCTIONS
@@ -30,35 +17,35 @@ function changeTheme() {
 //Creates a shuffled array containing two of each card
 function shuffleCards(cards) {
   let numCards = cards.length;
-  let shuffledArray = [];
+  let shuffleArray = [];
 
   //Puts one of each card in a random location
   cards.map((card) => {
     let index = Math.floor(Math.random() * numCards * 2);
-    if (!shuffledArray[index]) {
-      shuffledArray[index] = card;
+    if (!shuffleArray[index]) {
+      shuffleArray[index] = card;
     } else {
-      while (shuffledArray[index]) {
+      while (shuffleArray[index]) {
         index = Math.floor(Math.random() * numCards * 2);
       } //Ensures no overwrite
-      shuffledArray[index] = card;
+      shuffleArray[index] = card;
     }
   });
 
   //Puts a second of each card in a random location
   cards.map((card) => {
     let index = Math.floor(Math.random() * numCards * 2);
-    if (!shuffledArray[index]) {
-      shuffledArray[index] = card;
+    if (!shuffleArray[index]) {
+      shuffleArray[index] = card;
     } else {
-      while (shuffledArray[index]) {
+      while (shuffleArray[index]) {
         index = Math.floor(Math.random() * numCards * 2);
       }
-      shuffledArray[index] = card;
+      shuffleArray[index] = card;
     }
   });
 
-  return shuffledArray;
+  return shuffleArray;
 }
 
 
@@ -89,24 +76,40 @@ function compareCardsInitMatch() {
 //Checks two flipped cards to see if they're a match
 function checkMatch() {
     let firstCardIndex = cardListArr.findIndex((card) => {
-        return card.className === 'front';
-    });
+      return card.className === 'front';
+    }); 
     let firstCard = shuffledArray[firstCardIndex];
 
-    let secondCardIndex = cardListArr.findIndex((card) => {
+    let reverseArr = cardListArr.reverse();
+    let secondCardIndex = 11 - reverseArr.findIndex((card) => {
+        console.log(card.className);
         return card.className === 'front'
-    }, firstCardIndex);
+    });
     let secondCard = shuffledArray[secondCardIndex];
 
-    if (firstCard.id === secondCard.id) {
-        console.log("It's a match!");
-        //Change class of flipped cards to include done
-    } else {
-        console.log("Too bad");
-        //Flip cards back over
-    }
+    console.log(secondCardIndex);
+    console.log(secondCard);
 
-    //Add in turn counter
+    if (firstCard.id === secondCard.id) {
+        console.log("MATCH");
+        cardListArr.forEach((card) => {
+          if (card.classList.contains('front')) {
+            card.classList.remove('front');
+            card.classList.add('match');
+          }
+        })
+    } else {
+        console.log("NOPE");
+        cardListArr.forEach((card) => {
+          if (card.classList.contains('front')) {
+            card.classList.remove('front');
+            card.classList.add('back');
+            card.style.backgroundimage = 'none';
+          }
+        });
+      }
+
+    turnCounter++;
 }
 
 //Changes card face and back color based on selected theme
