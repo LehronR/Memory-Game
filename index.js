@@ -50,90 +50,97 @@ function shuffleCards(cards) {
 
 
 //Toggles to show card face
-function flipCard(e) {;
-    e.target.classList.remove();
-    e.target.className = "front"
-    
-    let index = e.srcElement.id;
-    let thisCard = shuffledArray[index]; 
-    
-    e.target.style.backgroundimage = thisCard.image;
+function flipCard(e) {
+  console.log(e);
+  e.target.classList.remove();
+  e.target.className = "front"
 
-    compareCardsInitMatch();
+  let index = e.srcElement.id;
+  let thisCard = shuffledArray[index];
+
+  e.target.style.backgroundimage = thisCard.image;
+
+  compareCardsInitMatch();
 }
 
 function compareCardsInitMatch() {
-    let cardsFlipped = cardListArr.filter((card) => {
-        return card.className === 'front';
-        }
-    );
+  let cardsFlipped = cardListArr.filter((card) => {
+    return card.className === 'front';
+  }
+  );
 
-    if (cardsFlipped.length === 2) {
-        checkMatch(); 
-    }
+  if (cardsFlipped.length === 2) {
+    checkMatch();
+  }
 }
 
 //Checks two flipped cards to see if they're a match
 function checkMatch() {
-    let firstCardIndex = cardListArr.findIndex((card) => {
-      return card.className === 'front';
-    }); 
-    let firstCard = shuffledArray[firstCardIndex];
+  let firstCardIndex = cardListArr.findIndex((card) => {
+    return card.className === 'front';
+  });
+  let firstCard = shuffledArray[firstCardIndex];
 
-    let reverseArr = cardListArr.reverse();
-    let secondCardIndex = 11 - reverseArr.findIndex((card) => {
-        console.log(card.className);
-        return card.className === 'front'
-    });
-    let secondCard = shuffledArray[secondCardIndex];
+  let reverseArr = cardListArr.reverse();
+  let secondCardIndex = 11 - reverseArr.findIndex((card) => {
+    console.log(card.className);
+    return card.className === 'front'
+  });
+  let secondCard = shuffledArray[secondCardIndex];
 
-    console.log(secondCardIndex);
-    console.log(secondCard);
+  console.log(secondCardIndex);
+  console.log(secondCard);
 
-    if (firstCard.id === secondCard.id) {
-        console.log("MATCH");
-        cardListArr.forEach((card) => {
-          if (card.classList.contains('front')) {
-            card.classList.remove('front');
-            card.classList.add('match');
-          }
-        })
-    } else {
-        console.log("NOPE");
-        cardListArr.forEach((card) => {
-          if (card.classList.contains('front')) {
-            card.classList.remove('front');
-            card.classList.add('back');
-            card.style.backgroundimage = 'none';
-          }
-        });
+  if (firstCard.id === secondCard.id) {
+    console.log("MATCH");
+    cardListArr.forEach((card) => {
+      if (card.classList.contains('front')) {
+        card.classList.remove('front');
+        card.classList.add('match');
       }
-
-    turnCounter++;
+    })
+  } else {
+    console.log("NOPE");
+    setTimeout(() => {
+      cardListArr.forEach((card) => {
+        if (card.classList.contains('front')) {
+          card.classList.remove('front');
+          card.classList.add('back');
+          card.removeAttribute('style');
+        }
+      })}, 5000);
+  }
+  
+  turnCounter++;
 }
+
+
+
 
 //Changes card face and back color based on selected theme
 function chooseTheme(input) {
-    let choice = input.selectedIndex;
-    //Mario
-    if (choice === 1) {
-        cardListArr.map((card) => {
-            card.style.backgroundColor = "red";
-            cards = superMario;
-        })
-    } else if (choice === 2) {
-        cardListArr.map((card) => {
-            card.style.backgroundColor = "blue";
-            cards = avengers;
-        })
-    } else {
-        cardListArr.map((card) => {
-            card.style.backgroundColor = "purple";
-            cards = defaultDeck;
-        })
-    }
+  let choice = input.selectedIndex;
+  //Mario
+  if (choice === 1) {
+    cardListArr.map((card) => {
+      card.style.backgroundColor = "red";
+      cards = superMario;
+    })
+  } //Avengers
+  else if (choice === 2) {
+    cardListArr.map((card) => {
+      card.style.backgroundColor = "blue";
+      cards = avengers;
+    })
+  } //Default
+  else {
+    cardListArr.map((card) => {
+      card.style.backgroundColor = "purple";
+      cards = defaultDeck;
+    })
+  }
 
-    return cards;
+  return shuffleCards(cards);
 }
 
 /* 
@@ -144,5 +151,5 @@ selectInput.addEventListener('change', chooseTheme);
 
 //Flip Card on click
 cardListArr.forEach((card) => {
-    card.addEventListener('click', flipCard);
+  card.addEventListener('click', flipCard);
 });
